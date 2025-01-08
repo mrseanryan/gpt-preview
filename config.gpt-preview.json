@@ -1,0 +1,7 @@
+{
+  "awsRegion": "eu-west-1",
+  "isDebug": false,
+  "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "temperature": 0.7,
+  "top_p": 0.9
+}

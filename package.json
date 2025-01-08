@@ -1,0 +1,55 @@
+{
+  "name": "gpt-preview",
+  "version": "0.0.1",
+  "description": "Previewing the output of an LLM or AI Agent: allow user to preview LLM actions before approving them OR use as a dev tool.",
+  "scripts": {
+    "test": "test",
+    "build": "pkgroll"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mrseanryan//gpt-multi-atomic-agents.git"
+  },
+  "keywords": [
+    "genai",
+    "genai-preview",
+    "agent-preview",
+    "llm-preview",
+    "dev-tool",
+    "function-calling",
+    "function-calling-preview"
+  ],
+  "type": "module",
+  "author": "mr.sean.ryan(at)google.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrseanryan/gpt-multi-atomic-agents/issues"
+  },
+  "homepage": "https://github.com/mrseanryan/gpt-multi-atomic-agents#readme",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "pkgroll": "^2.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.723.0",
+    "@inquirer/prompts": "^7.2.0",
+    "cli-spinners": "^3.2.0",
+    "colors": "^1.4.0",
+    "yocto-spinner": "^0.1.2"
+  }
+}
