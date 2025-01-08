@@ -6,23 +6,31 @@ import { exit } from "process";
 
 import { buildSystemPrompt } from "./prompts.js";
 import { getConfig } from "./util_config.js";
-import { readJsonFromFile } from "./util_file.js";
+import { readJsonFromFile, writeTextToFile } from "./util_file.js";
 import { printAssistant, printUser } from "./utils_print.js";
 
 printAssistant("Hello from gpt-preview");
 printUser("hi!");
 
 const printUsage = (): void => {
-  printAssistant("USAGE: <path to LLM output file> [OPTIONS]");
+  printAssistant(
+    "USAGE: <path to LLM output file> [path to output file] [OPTIONS]"
+  );
 };
 
+let pathToLlmOutputFile = "";
+let pathToOutputFile = "";
+
 const args = process.argv.slice(2);
-if (args.length !== 1) {
+if (args.length === 1) {
+  pathToLlmOutputFile = args[0];
+} else if (args.length === 2) {
+  pathToLlmOutputFile = args[0];
+  pathToOutputFile = args[1];
+} else {
   printUsage();
   exit(2);
 }
-
-const pathToLlmOutputFile = args[0];
 
 const config = getConfig();
 
@@ -93,6 +101,12 @@ try {
   let dot = responseText.split("```dot")[1];
   dot = dot.split("```")[0];
   console.log(dot);
+
+  if (pathToOutputFile.length) {
+    printAssistant(`Writing result to ${pathToOutputFile}`);
+    writeTextToFile(pathToOutputFile, dot);
+  }
+
   printAssistant("[done]");
 } catch (error) {
   // error handling.
