@@ -23,10 +23,13 @@ if (args.length !== 1) {
 }
 
 const pathToLlmOutputFile = args[0];
-const llmOutput = JSON.stringify(readJsonFromFile(pathToLlmOutputFile));
 
 const config = getConfig();
 
+printAssistant(`Summarizing file at '${pathToLlmOutputFile}'`);
+const llmOutput = JSON.stringify(readJsonFromFile(pathToLlmOutputFile));
+
+printAssistant("Connecting...");
 const client = new BedrockRuntimeClient({ region: config.awsRegion });
 
 const messages = [
@@ -59,6 +62,8 @@ const command = new InvokeModelCommand(params);
 
 // async/await.
 try {
+  printAssistant("Summarizing...");
+
   const response = await client.send(command);
   // Save the raw response
   const rawRes = response.body;
@@ -69,22 +74,26 @@ try {
   // Parse the JSON string
   const parsedResponse = JSON.parse(jsonString);
 
-  console.log("-------------------------");
-  console.log("---Pased Response Body---");
-  console.log("-------------------------");
-  console.log(parsedResponse);
-  console.log("-------------------------");
-  console.log("-------------------------");
-  console.log("----Completion Result----");
-  console.log("-------------------------");
-  console.log(parsedResponse.generation);
-  console.log("-------------------------");
+  if (config.isDebug) {
+    console.log("-------------------------");
+    console.log("---Pased Response Body---");
+    console.log("-------------------------");
+    console.log(parsedResponse);
+    console.log("-------------------------");
+    console.log("-------------------------");
+    console.log("----Completion Result----");
+    console.log("-------------------------");
+    console.log(parsedResponse.generation);
+    console.log("-------------------------");
+  }
 
   // process data.
+  printAssistant("Outputting result...");
   const responseText = parsedResponse.content[0].text;
   let dot = responseText.split("```dot")[1];
   dot = dot.split("```")[0];
-  console.log("DOT", dot);
+  console.log(dot);
+  printAssistant("[done]");
 } catch (error) {
   // error handling.
   // const { requestId, cfId, extendedRequestId } = error?.$metadata;
