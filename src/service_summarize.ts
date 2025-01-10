@@ -43,14 +43,16 @@ const parseResponse = (
   config: Config
 ): string => {
   let activeOutputFormat = outputFormat.toString();
-  if (!response.includes(activeOutputFormat)) {
+  let START_TOKEN = "```" + activeOutputFormat;
+  if (!response.includes(START_TOKEN)) {
     activeOutputFormat = activeOutputFormat.toLowerCase();
+    START_TOKEN = "```" + activeOutputFormat;
   }
   if (!response.includes(activeOutputFormat)) {
     throw new Error(`Cannot parse the output to format ${outputFormat}`);
   }
 
-  let parsedResponse = response.split("```" + activeOutputFormat)[1];
+  let parsedResponse = response.split(START_TOKEN)[1];
   parsedResponse = parsedResponse.split("```")[0];
 
   if (config.isDebug) {
