@@ -1,6 +1,6 @@
 {
   "name": "gpt-preview",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Previewing the output of an LLM or AI Agent: allow user to preview LLM actions before approving them OR use as a dev tool.",
   "scripts": {
     "start": "npx tsx ./src/main_cli.ts",

@@ -1,0 +1,21 @@
+{
+  "name": "e2e-gpt-preview-client",
+  "version": "0.0.1",
+  "description": "test for consuming the gpt-preview package",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "gpt-preview": "^0.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "private": true
+}

@@ -6,6 +6,13 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 - can be used as a library in an AI application, to provide user with a preview of the AI actions, before the user actually agrees to apply the actions.
 - can be used as a dev tool, by taking the AI output and pasting it into a locally run website.
 
+[![npm Package](https://img.shields.io/npm/v/gpt-preview.svg?style=flat-square)](https://www.npmjs.org/package/gpt-preview)
+[![NPM Downloads](https://img.shields.io/npm/dm/gpt-preview.svg)](https://npmjs.org/package/gpt-preview)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K73ALBJ)
+
 # Setup
 
 - [Node](https://nodejs.org/en/download/package-manager) v20.18+
