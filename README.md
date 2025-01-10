@@ -44,9 +44,9 @@ npm install gpt-preview
 To summarize text in-memory (to a variable 'summary') in JSON format:
 
 ```TS
-import { Config, OutputFormat, summarizeText } from "gpt-preview";
+import { OutputFormat, summarizeText } from "gpt-preview";
 
-const config: Config = {
+const config = {
   "awsRegion": "eu-west-1",
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
@@ -64,9 +64,9 @@ const summary = summarizeText(
 To summarize a file, in DOT format:
 
 ```TS
-import { Config, OutputFormat, summarizeFile } from "gpt-preview";
+import { OutputFormat, summarizeFile } from "gpt-preview";
 
-const config: Config = {
+const config = {
   "awsRegion": "eu-west-1",
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
