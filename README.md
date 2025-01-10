@@ -41,12 +41,43 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 npm install gpt-preview
 ```
 
+To summarize text in-memory (to a variable 'summary') in JSON format:
+
 ```TS
-import { OutputFormat, summarizeText } from "gpt-preview";
+import { Config, OutputFormat, summarizeText } from "gpt-preview";
+
+const config: Config = {
+  "awsRegion": "eu-west-1",
+  "isDebug": false,
+  "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "temperature": 0.7,
+  "top_p": 0.9
+}
 
 const summary = summarizeText(
     "My LLM output to summarize",
-    OutputFormat.DOT,
+    OutputFormat.JSON,
     config
+    );
+```
+
+To summarize a file, in DOT format:
+
+```TS
+import { Config, OutputFormat, summarizeFile } from "gpt-preview";
+
+const config: Config = {
+  "awsRegion": "eu-west-1",
+  "isDebug": false,
+  "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "temperature": 0.7,
+  "top_p": 0.9
+}
+
+const summary = summarizeFile(
+    "./temp/my-LLM-output.txt",
+    OutputFormat.DOT,
+    config,
+    "./temp/my-summary.dot"
     );
 ```
