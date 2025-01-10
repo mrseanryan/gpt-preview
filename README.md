@@ -1,6 +1,6 @@
 # gpt-preview README
 
-A Node.js library and dev tool for previewing the output of an LLM or AI Agent
+A Node.js library and dev tool for previewing the output of an LLM or AI Agent (using an LLM)
 
 - take complex output such as Function Calls or GraphQL mutations, and generate easy to view 'previews'
 - can be used as a library in an AI application, to provide user with a preview of the AI actions, before the user actually agrees to apply the actions.
@@ -14,7 +14,7 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent
 ./install.sh
 ```
 
-- Configure via the [config file](./config.gpt-preview.json).
+- Configure LLM via the [config file](./config.gpt-preview.json).
 
 # Usage
 
@@ -29,5 +29,8 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent
 ```
 
 - currently can summarize to:
+
   - DOT (graphviz) format
   - JSON format (containing short and long text summaries)
+
+- currently supports LLM hosted on AWS Bedrock
