@@ -19,7 +19,15 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent
 # Usage
 
 ```
-./go.sh <path to text file containing the LLM output> [path to output file] [OPTIONS]
+./go.sh <path to text file containing the LLM output> [OPTIONS]
 ```
 
-- currently can summarize to DOT (graphviz) format
+```
+- where OPTIONS are:
+    -f=<DOT|JSON> (default is DOT)
+    -o=<path to output file>
+```
+
+- currently can summarize to:
+  - DOT (graphviz) format
+  - JSON format (containing short and long text summaries)

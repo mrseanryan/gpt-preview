@@ -30,7 +30,9 @@
     "llm-preview",
     "dev-tool",
     "function-calling",
-    "function-calling-preview"
+    "function-calling-preview",
+    "genai-summary",
+    "genai-debug"
   ],
   "type": "module",
   "author": "mr.sean.ryan(at)google.com",

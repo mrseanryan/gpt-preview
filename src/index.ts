@@ -4,7 +4,10 @@ import {
 } from "@aws-sdk/client-bedrock-runtime";
 import { exit } from "process";
 
-import { buildSystemPrompt } from "./prompts.js";
+import {
+  buildSystemPromptToOutputDot,
+  buildSystemPromptToOutputJson,
+} from "./prompts.js";
 import { getConfig } from "./util_config.js";
 import { readJsonFromFile, writeTextToFile } from "./util_file.js";
 import { printAssistant, printUser } from "./utils_print.js";
@@ -14,28 +17,77 @@ printUser("hi!");
 
 const printUsage = (): void => {
   printAssistant(
-    "USAGE: <path to LLM output file> [path to output file] [OPTIONS]"
+    "USAGE: <path to LLM output file> [OPTIONS]\n",
+    "  where OPTIONS are:\n",
+    "  -f=<DOT|JSON> (default is DOT)\n",
+    "  -o=<path to output file>\n"
   );
 };
 
 let pathToLlmOutputFile = "";
 let pathToOutputFile = "";
 
-const args = process.argv.slice(2);
+enum OutputFormat {
+  JSON = "JSON",
+  DOT = "DOT",
+}
+
+let outputFormat: OutputFormat;
+outputFormat = OutputFormat.DOT;
+
+const partition = (arr: any[], fn: Function) =>
+  arr.reduce(
+    (acc, val, i, arr) => {
+      acc[fn(val, i, arr) ? 0 : 1].push(val);
+      return acc;
+    },
+    [[], []]
+  );
+
+const argsRaw = process.argv.slice(2);
+
+const argsOrOptions = partition(argsRaw, (a) => a.startsWith("-"));
+const options = argsOrOptions[0];
+const args = argsOrOptions[1];
 if (args.length === 1) {
   pathToLlmOutputFile = args[0];
-} else if (args.length === 2) {
-  pathToLlmOutputFile = args[0];
-  pathToOutputFile = args[1];
 } else {
   printUsage();
   exit(2);
 }
 
+options.forEach((o: string) => {
+  const parts = o.split("=");
+  const option = parts[0];
+  switch (option) {
+    case "-f":
+      switch (parts[1]) {
+        case "DOT":
+          outputFormat = OutputFormat.DOT;
+          break;
+        case "JSON":
+          outputFormat = OutputFormat.JSON;
+          break;
+        default:
+          console.error(`Not a recognised format ${parts[1]}`);
+      }
+      break;
+    case "-o":
+      pathToOutputFile = parts[1];
+      break;
+    default:
+      console.error(`Not a recognised option ${o}`);
+      printUsage();
+      exit(3);
+  }
+});
+
 const config = getConfig();
 
-printAssistant(`Summarizing file at '${pathToLlmOutputFile}'`);
-const llmOutput = JSON.stringify(readJsonFromFile(pathToLlmOutputFile));
+printAssistant(
+  `Summarizing file at '${pathToLlmOutputFile}' to ${outputFormat}`
+);
+const llmOriginalOutput = JSON.stringify(readJsonFromFile(pathToLlmOutputFile));
 
 printAssistant("Connecting...");
 const client = new BedrockRuntimeClient({ region: config.awsRegion });
@@ -47,13 +99,25 @@ const messages = [
   },
   {
     role: "user",
-    content: "Summarize the provided output to DOT format",
+    content: `Summarize the provided output to ${outputFormat} format`,
   },
 ];
 
+let buildSystemPrompt: Function = buildSystemPromptToOutputDot;
+switch (outputFormat) {
+  case OutputFormat.DOT:
+    buildSystemPrompt = buildSystemPromptToOutputDot;
+    break;
+  case OutputFormat.JSON:
+    buildSystemPrompt = buildSystemPromptToOutputJson;
+    break;
+  default:
+    throw new Error(`Not a recognised format ${outputFormat}`);
+}
+
 const body = {
   max_tokens: 2048,
-  system: buildSystemPrompt(llmOutput),
+  system: buildSystemPrompt(llmOriginalOutput),
   messages: messages,
   temperature: config.temperature,
   top_p: config.top_p,
@@ -98,7 +162,7 @@ try {
   // process data.
   printAssistant("Outputting result...");
   const responseText = parsedResponse.content[0].text;
-  let dot = responseText.split("```dot")[1];
+  let dot = responseText.split("```" + outputFormat)[1];
   dot = dot.split("```")[0];
   console.log(dot);
 
