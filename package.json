@@ -1,6 +1,6 @@
 {
   "name": "gpt-preview",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Previewing the output of an LLM or AI Agent: allow user to preview LLM actions before approving them OR use as a dev tool.",
   "scripts": {
     "start": "npx tsx ./src/main_cli.ts",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mrseanryan//gpt-multi-atomic-agents.git"
+    "url": "git@github.com:mrseanryan//gpt-preview.git"
   },
   "keywords": [
     "genai",
@@ -39,9 +39,9 @@
   "author": "mr.sean.ryan(at)google.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrseanryan/gpt-multi-atomic-agents/issues"
+    "url": "https://github.com/mrseanryan/gpt-preview/issues"
   },
-  "homepage": "https://github.com/mrseanryan/gpt-multi-atomic-agents#readme",
+  "homepage": "https://github.com/mrseanryan/gpt-preview#readme",
   "devDependencies": {
     "@types/node": "^22.10.1",
     "pkgroll": "^2.5.1",
