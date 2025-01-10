@@ -1,3 +1,3 @@
 set -e
 
-npx tsx ./src/index.ts "$@"
+npx tsx ./src/main_cli.ts "$@"

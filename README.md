@@ -16,7 +16,7 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 
 - Configure LLM via the [config file](./config.gpt-preview.json).
 
-# Usage
+# Usage [as command line tool]
 
 ```
 ./go.sh <path to text file containing the LLM output> [OPTIONS]
@@ -34,3 +34,19 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
   - JSON format (containing short and long text summaries)
 
 - currently supports LLM hosted on AWS Bedrock
+
+# Usage [as an npm library]
+
+```
+npm install gpt-preview
+```
+
+```TS
+import { OutputFormat, summarizeText } from "gpt-preview";
+
+const summary = summarizeText(
+    "My LLM output to summarize",
+    OutputFormat.DOT,
+    config
+    );
+```
