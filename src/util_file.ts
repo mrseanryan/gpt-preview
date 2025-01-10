@@ -27,6 +27,26 @@ export const readJsonFromFile = (
   return JSON.parse(buffer.toString());
 };
 
+export const readRawTextFromFile = (
+  filepath: string,
+  encoding: BufferEncoding = "utf-8"
+): any => {
+  const buffer = fs.readFileSync(filepath, { encoding: encoding });
+  return buffer.toString();
+};
+
+export const readTextFromFile = (
+  filepath: string,
+  encoding: BufferEncoding = "utf-8"
+): string => {
+  // This helps trap invalid JSON
+  if (filepath.toLowerCase().endsWith(".json")) {
+    return JSON.stringify(readJsonFromFile(filepath, encoding));
+  }
+
+  return readRawTextFromFile(filepath, encoding);
+};
+
 export const writeJsonToFile = (
   filepath: string,
   data: any,

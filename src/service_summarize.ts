@@ -8,7 +8,7 @@ import {
   buildSystemPromptToOutputJson,
 } from "./prompts.js";
 import { Config } from "./util_config.js";
-import { readJsonFromFile, writeTextToFile } from "./util_file.js";
+import { readTextFromFile, writeTextToFile } from "./util_file.js";
 import { printAssistant, printResult } from "./utils_print.js";
 
 export enum OutputFormat {
@@ -25,9 +25,7 @@ export const summarizeFile = async (
   printAssistant(
     `Summarizing file at '${pathToLlmOutputFile}' to ${outputFormat}`
   );
-  const llmOriginalOutput = JSON.stringify(
-    readJsonFromFile(pathToLlmOutputFile)
-  );
+  const llmOriginalOutput = readTextFromFile(pathToLlmOutputFile);
 
   return summarizeText(
     llmOriginalOutput,
