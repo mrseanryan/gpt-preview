@@ -9,7 +9,7 @@ import {
 } from "./prompts.js";
 import { Config } from "./util_config.js";
 import { readJsonFromFile, writeTextToFile } from "./util_file.js";
-import { printAssistant } from "./utils_print.js";
+import { printAssistant, printResult } from "./utils_print.js";
 
 export enum OutputFormat {
   JSON = "JSON",
@@ -35,6 +35,29 @@ export const summarizeFile = async (
     config,
     pathToOutputFile
   );
+};
+
+const parseResponse = (
+  response: string,
+  outputFormat: OutputFormat,
+  config: Config
+): string => {
+  let activeOutputFormat = outputFormat.toString();
+  if (!response.includes(activeOutputFormat)) {
+    activeOutputFormat = activeOutputFormat.toLowerCase();
+  }
+  if (!response.includes(activeOutputFormat)) {
+    throw new Error(`Cannot parse the output to format ${outputFormat}`);
+  }
+
+  let parsedResponse = response.split("```" + activeOutputFormat)[1];
+  parsedResponse = parsedResponse.split("```")[0];
+
+  if (config.isDebug) {
+    console.log(parsedResponse);
+  }
+
+  return parsedResponse;
 };
 
 export const summarizeText = async (
@@ -115,16 +138,14 @@ export const summarizeText = async (
     // process data.
     printAssistant("Outputting result...");
     const responseText: string = parsedResponse.content[0].text;
-    let resultParsed = responseText.split("```" + outputFormat)[1];
-    resultParsed = resultParsed.split("```")[0];
 
-    if (config.isDebug) {
-      console.log(resultParsed);
-    }
+    const resultParsed = parseResponse(responseText, outputFormat, config);
 
     if (pathToOutputFile && pathToOutputFile.length) {
       printAssistant(`Writing result to ${pathToOutputFile}`);
       writeTextToFile(pathToOutputFile, resultParsed);
+    } else {
+      printResult(resultParsed);
     }
 
     printAssistant("[done]");

@@ -44,6 +44,10 @@ export const printDetail = (...args: any[]): void => {
   console.log("  ", ...cargs);
 };
 
+export const printResult = (...args: any[]): void => {
+  console.log(...args.map((a) => colors.cyan(a)));
+};
+
 export const dumpJson = (json: any, name: string) => {
   if (isDebugActive()) {
     printDetail(`DUMP: ${name}`);
