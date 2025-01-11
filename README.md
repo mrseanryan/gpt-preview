@@ -6,6 +6,13 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 - can be used as a library in an AI application, to provide user with a preview of the AI actions, before the user actually agrees to apply the actions.
 - can be used as a dev tool, by taking the AI output and pasting it into a locally run website.
 
+- currently can summarize to:
+
+  - DOT (graphviz) format
+  - JSON format (containing short and long text summaries)
+
+- supports LLM hosted on AWS Bedrock or OpenaI
+
 [![npm Package](https://img.shields.io/npm/v/gpt-preview.svg?style=flat-square)](https://www.npmjs.org/package/gpt-preview)
 [![NPM Downloads](https://img.shields.io/npm/dm/gpt-preview.svg)](https://npmjs.org/package/gpt-preview)
 
@@ -34,13 +41,6 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
     -f=<DOT|JSON> (default is DOT)
     -o=<path to output file>
 ```
-
-- currently can summarize to:
-
-  - DOT (graphviz) format
-  - JSON format (containing short and long text summaries)
-
-- currently supports LLM hosted on AWS Bedrock
 
 # Usage [as an npm library]
 
