@@ -92,7 +92,7 @@ export const summarizeText = async (
   try {
     const client = createLlmClient(config);
 
-    printAssistant("Connecting...");
+    printAssistant(`Connecting to [${client.getPlatform()}]...`);
     client.connect();
 
     printAssistant("Summarizing...");

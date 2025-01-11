@@ -2,7 +2,7 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import { Config } from "./util_config.js";
+import { Config, Platform } from "./util_config.js";
 import { ILlmClient, LlmMessage } from "./llm_client_base.js";
 
 export class AwsBedrockLlmClient implements ILlmClient {
@@ -17,6 +17,8 @@ export class AwsBedrockLlmClient implements ILlmClient {
     this.client = new BedrockRuntimeClient({ region: this.config.awsRegion });
   }
 
+  public getPlatform = (): Platform => Platform.AwsBedrock;
+
   public async send(
     systemPrompt: string,
     messages: LlmMessage[]
@@ -26,7 +28,7 @@ export class AwsBedrockLlmClient implements ILlmClient {
     }
 
     const body = {
-      max_tokens: 2048,
+      max_tokens: this.config.maxTokens,
       system: systemPrompt,
       messages: messages,
       temperature: this.config.temperature,

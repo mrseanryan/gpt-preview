@@ -54,11 +54,13 @@ To summarize text in-memory (to a variable 'summary') in JSON format:
 import { OutputFormat, summarizeText } from "gpt-preview";
 
 const config = {
-  "awsRegion": "eu-west-1",
+  "platform": "AwsBedrock",
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "maxTokens": 2048,
   "temperature": 0.7,
-  "top_p": 0.9
+  "top_p": 0.9,
+  "awsRegion": "eu-west-1"
 }
 
 const summary = summarizeText(
@@ -74,11 +76,13 @@ To summarize a file, in DOT format:
 import { OutputFormat, summarizeFile } from "gpt-preview";
 
 const config = {
-  "awsRegion": "eu-west-1",
+  "platform": "AwsBedrock",
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "maxTokens": 2048,
   "temperature": 0.7,
-  "top_p": 0.9
+  "top_p": 0.9,
+  "awsRegion": "eu-west-1"
 }
 
 const summary = summarizeFile(
@@ -87,4 +91,17 @@ const summary = summarizeFile(
     config,
     "./temp/my-summary.dot"
     );
+```
+
+To use OpenAI instead of AWS Bedrock, simply change the config:
+
+```TS
+const config = {
+  "platform": "OpenAI",
+  "isDebug": false,
+  "modelId": "gpt-4o-mini",
+  "maxTokens": 2048,
+  "temperature": 0.7,
+  "top_p": 0.9
+}
 ```

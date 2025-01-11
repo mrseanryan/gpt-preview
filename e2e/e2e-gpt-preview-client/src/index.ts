@@ -1,11 +1,13 @@
 import { OutputFormat, summarizeText } from "gpt-preview";
 
 const config = {
-  awsRegion: "eu-west-1",
-  isDebug: true,
+  platform: "AwsBedrock",
+  isDebug: false,
   modelId: "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
+  maxTokens: 2048,
   temperature: 0.7,
   top_p: 0.9,
+  awsRegion: "eu-west-1",
 };
 
 const summary = summarizeText(

@@ -10,6 +10,7 @@ export interface Config {
   platform: Platform;
   isDebug: boolean;
   modelId: string;
+  maxTokens: number;
   temperature: number;
   top_p: number;
   awsRegion: string | undefined;
