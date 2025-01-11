@@ -25,10 +25,12 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 - [Node](https://nodejs.org/en/download/package-manager) v20.18+
 
 ```
-./install.sh
+npm install gpt-preview
 ```
 
-- Configure LLM via the [config file](./config.gpt-preview.json).
+- Configure LLM via the config file:
+  - [AWS Bedrock config](https://github.com/mrseanryan/gpt-preview/blob/master/config.gpt-preview.json).
+  - [OpenAI config](https://github.com/mrseanryan/gpt-preview/blob/master/config.gpt-preview.openai.json).
 
 # Usage [as command line tool]
 
