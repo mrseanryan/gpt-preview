@@ -1,15 +1,12 @@
 import {
-  BedrockRuntimeClient,
-  InvokeModelCommand,
-} from "@aws-sdk/client-bedrock-runtime";
-
-import {
   buildSystemPromptToOutputDot,
   buildSystemPromptToOutputJson,
 } from "./prompts.js";
 import { Config } from "./util_config.js";
 import { readTextFromFile, writeTextToFile } from "./util_file.js";
 import { printAssistant, printResult } from "./utils_print.js";
+import { createLlmClient } from "./llm_client_factory.js";
+import { LlmMessage } from "./llm_client_base.js";
 
 export enum OutputFormat {
   JSON = "JSON",
@@ -27,12 +24,14 @@ export const summarizeFile = async (
   );
   const llmOriginalOutput = readTextFromFile(pathToLlmOutputFile);
 
-  return summarizeText(
-    llmOriginalOutput,
-    outputFormat,
-    config,
-    pathToOutputFile
-  );
+  const summary = await summarizeText(llmOriginalOutput, outputFormat, config);
+
+  if (pathToOutputFile && pathToOutputFile.length) {
+    printAssistant(`Writing result to ${pathToOutputFile}`);
+    writeTextToFile(pathToOutputFile, summary);
+  }
+
+  return summary;
 };
 
 const parseResponse = (
@@ -63,13 +62,9 @@ const parseResponse = (
 export const summarizeText = async (
   llmOriginalOutput: string,
   outputFormat: OutputFormat,
-  config: Config,
-  pathToOutputFile: string | null = ""
+  config: Config
 ): Promise<string> => {
-  printAssistant("Connecting...");
-  const client = new BedrockRuntimeClient({ region: config.awsRegion });
-
-  const messages = [
+  const messages: LlmMessage[] = [
     {
       role: "assistant",
       content: "How can I help you?",
@@ -92,67 +87,26 @@ export const summarizeText = async (
       throw new Error(`Not a recognised format ${outputFormat}`);
   }
 
-  const body = {
-    max_tokens: 2048,
-    system: buildSystemPrompt(llmOriginalOutput),
-    messages: messages,
-    temperature: config.temperature,
-    top_p: config.top_p,
-    anthropic_version: "bedrock-2023-05-31",
-  };
-
-  const params = {
-    modelId: config.modelId,
-    body: JSON.stringify(body),
-    contentType: "application/json",
-    accept: "*/*",
-  };
-  const command = new InvokeModelCommand(params);
+  const systemPrompt = buildSystemPrompt(llmOriginalOutput);
 
   try {
+    const client = createLlmClient(config);
+
+    printAssistant("Connecting...");
+    client.connect();
+
     printAssistant("Summarizing...");
+    const responseText = await client.send(systemPrompt, messages);
 
-    const response = await client.send(command);
-    // Save the raw response
-    const rawRes = response.body;
-
-    // Convert it to a JSON String
-    const jsonString = new TextDecoder().decode(rawRes);
-
-    // Parse the JSON string
-    const parsedResponse = JSON.parse(jsonString);
-
-    if (config.isDebug) {
-      console.log("-------------------------");
-      console.log("---Pased Response Body---");
-      console.log("-------------------------");
-      console.log(parsedResponse);
-      console.log("-------------------------");
-      console.log("-------------------------");
-      console.log("----Completion Result----");
-      console.log("-------------------------");
-      console.log(parsedResponse.generation);
-      console.log("-------------------------");
-    }
-
-    // process data.
     printAssistant("Outputting result...");
-    const responseText: string = parsedResponse.content[0].text;
-
     const resultParsed = parseResponse(responseText, outputFormat, config);
-
-    if (pathToOutputFile && pathToOutputFile.length) {
-      printAssistant(`Writing result to ${pathToOutputFile}`);
-      writeTextToFile(pathToOutputFile, resultParsed);
-    } else {
-      printResult(resultParsed);
-    }
+    printResult(resultParsed);
 
     printAssistant("[done]");
 
     return resultParsed;
   } catch (error) {
-    // TODO improve error handling - const { requestId, cfId, extendedRequestId } = error?.$metadata;
+    // TODO improve error handling - AWS: const { requestId, cfId, extendedRequestId } = error?.$metadata;
     console.log({ error });
   }
 

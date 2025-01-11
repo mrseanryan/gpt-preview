@@ -1,12 +1,18 @@
 import path from "node:path";
 import { readJsonFromFile } from "./util_file.js";
 
+export enum Platform {
+  OpenAI = "OpenAI",
+  AwsBedrock = "AwsBedrock",
+}
+
 export interface Config {
-  awsRegion: string;
+  platform: Platform;
   isDebug: boolean;
   modelId: string;
   temperature: number;
   top_p: number;
+  awsRegion: string | undefined;
 }
 
 export const getConfig = (): Config => {
