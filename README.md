@@ -24,15 +24,23 @@ A Node.js library and dev tool for previewing the output of an LLM or AI Agent (
 
 - [Node](https://nodejs.org/en/download/package-manager) v20.18+
 
+# Usage [as command line tool]
+
+- Clone this git repository
+
+- Install dependencies
+
 ```
-npm install gpt-preview
+npm install
 ```
 
 - Configure LLM via the config file:
   - [AWS Bedrock config](https://github.com/mrseanryan/gpt-preview/blob/master/config.gpt-preview.json).
   - [OpenAI config](https://github.com/mrseanryan/gpt-preview/blob/master/config.gpt-preview.openai.json).
 
-# Usage [as command line tool]
+The config file needs to be named 'config.gpt-preview.json' and placed in the current working directory.
+
+Then you can run the tool:
 
 ```
 ./go.sh <path to text file containing the LLM output> [OPTIONS]
@@ -50,7 +58,7 @@ npm install gpt-preview
 npm install gpt-preview
 ```
 
-To summarize text in-memory (to a variable 'summary') in JSON format:
+To summarize text in-memory (to a variable 'summary') => JSON format:
 
 ```TS
 import { OutputFormat, Platform, summarizeText } from "gpt-preview";
@@ -72,7 +80,7 @@ const summary = await summarizeText(
     );
 ```
 
-To summarize a file, in DOT format:
+To summarize a file => DOT format:
 
 ```TS
 import { OutputFormat, Platform, summarizeFile } from "gpt-preview";
