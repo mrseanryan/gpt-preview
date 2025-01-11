@@ -51,10 +51,10 @@ npm install gpt-preview
 To summarize text in-memory (to a variable 'summary') in JSON format:
 
 ```TS
-import { OutputFormat, summarizeText } from "gpt-preview";
+import { OutputFormat, Platform, summarizeText } from "gpt-preview";
 
 const config = {
-  "platform": "AwsBedrock",
+  "platform": Platform.AwsBedrock,
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
   "maxTokens": 2048,
@@ -63,7 +63,7 @@ const config = {
   "awsRegion": "eu-west-1"
 }
 
-const summary = summarizeText(
+const summary = await summarizeText(
     "My LLM output to summarize",
     OutputFormat.JSON,
     config
@@ -73,10 +73,10 @@ const summary = summarizeText(
 To summarize a file, in DOT format:
 
 ```TS
-import { OutputFormat, summarizeFile } from "gpt-preview";
+import { OutputFormat, Platform, summarizeFile } from "gpt-preview";
 
 const config = {
-  "platform": "AwsBedrock",
+  "platform": Platform.AwsBedrock,
   "isDebug": false,
   "modelId": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
   "maxTokens": 2048,
@@ -85,7 +85,7 @@ const config = {
   "awsRegion": "eu-west-1"
 }
 
-const summary = summarizeFile(
+const summary = await summarizeFile(
     "./temp/my-LLM-output.txt",
     OutputFormat.DOT,
     config,
@@ -97,7 +97,7 @@ To use OpenAI instead of AWS Bedrock, simply change the config:
 
 ```TS
 const config = {
-  "platform": "OpenAI",
+  "platform": Platform.OpenAI,
   "isDebug": false,
   "modelId": "gpt-4o-mini",
   "maxTokens": 2048,

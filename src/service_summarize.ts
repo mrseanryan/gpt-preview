@@ -2,7 +2,7 @@ import {
   buildSystemPromptToOutputDot,
   buildSystemPromptToOutputJson,
 } from "./prompts.js";
-import { Config } from "./util_config.js";
+import { Config, Platform } from "./util_config.js";
 import { readTextFromFile, writeTextToFile } from "./util_file.js";
 import { printAssistant, printResult } from "./utils_print.js";
 import { createLlmClient } from "./llm_client_factory.js";
@@ -12,6 +12,8 @@ export enum OutputFormat {
   JSON = "JSON",
   DOT = "DOT",
 }
+
+export { Platform };
 
 export const summarizeFile = async (
   pathToLlmOutputFile: string,
